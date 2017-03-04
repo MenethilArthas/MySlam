@@ -31,4 +31,5 @@ int8_t Get_Pos(Posture *posData);
 
 void  SetInput(uint8_t input);
 uint8_t GetInput(void);
+void MotionCtrl(uint8_t cmd);
 #endif

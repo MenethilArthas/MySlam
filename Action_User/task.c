@@ -86,7 +86,7 @@ void ConfigTask(void)
 	NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
 	
 	//延时3s，等待定位系统和驱动器初始化	
-	TIM_Delayms(TIM5,5000);
+	TIM_Delayms(TIM5,10000);
 	CAN_Config( CAN1, 500,GPIOB,GPIO_Pin_8, GPIO_Pin_9 );
 	
 	//10ms中断
@@ -109,11 +109,10 @@ void ConfigTask(void)
 	ActionSetOperationalMode(2); // 发送命令前，需要控制驱动器 在可操作模式
 	ActionConfigTorque(1,1000);
 	ActionConfigTorque(2,1000);
-	ActionSetTorque(1,500);	
-	ActionSetTorque(2,-500);	
 
-//	ActionConfigVelocity(1,50000,50000);
-//	ActionConfigVelocity(2,50000,50000);
+
+	ActionConfigVelocity(1,50000,50000);
+	ActionConfigVelocity(2,50000,50000);
 
 
 	OSSemSet(PeriodSem,0,&os_err);			
@@ -127,20 +126,31 @@ void WalkTask(void)
 {
 	CPU_INT08U  os_err;
 	Posture pos;
-
 	uint8_t cmd      = 0;
-
-	static int currentValue=0;
+	union 
+	{
+		uint8_t data[12];
+		float coor[3];
+	}txData;
+	
 	while(1)
 	{
 			OSSemPend(PeriodSem,0,&os_err);
-			ActionRequestMotorInfo(2, CURRENT);
-		  currentValue=Get_Current_Value();
+		  
 		  cmd=GetInput();
 			Get_Pos(&pos);
-			USART_OUT(UART4,"%d\r\n",currentValue);
-			//MotionCtrl(cmd);
+			MotionCtrl(cmd);
+			txData.coor[0]=pos.x;
+			txData.coor[1]=pos.y;
+			txData.coor[2]=pos.angle;
+			USART_SendData(USART2,'A');
+			USART_SendData(USART2,'C');
+			for(int i=0;i<12;i++)
+			{
+				USART_SendData(USART2,txData.data[i]);
+			}
 		
+
 	}
 }
 
