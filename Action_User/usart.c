@@ -113,7 +113,7 @@ void DEBUG_UART4_Init(u32 BaudRate)
    //GPIO端口设置
   GPIO_InitTypeDef GPIO_InitStructure;
 	USART_InitTypeDef USART_InitStructure;
-//	NVIC_InitTypeDef NVIC_InitStructure;
+	NVIC_InitTypeDef NVIC_InitStructure;
 	
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC,ENABLE); //使能GPIOC时钟
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_UART4,ENABLE);//使能UART4时钟
@@ -141,17 +141,17 @@ void DEBUG_UART4_Init(u32 BaudRate)
 	
   USART_Cmd(UART4, ENABLE);  //使能串口4
 	
-//	USART_ClearFlag(UART4, USART_FLAG_TC);
-//	
+	USART_ClearFlag(UART4, USART_FLAG_TC);
+	
 
-//	USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);//开启相关中断
+	USART_ITConfig(UART4, USART_IT_RXNE, ENABLE);//开启相关中断
 
-//	//Usart1 NVIC 配置
-//  NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;//串口1中断通道
-//	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3;//抢占优先级3
-//	NVIC_InitStructure.NVIC_IRQChannelSubPriority =3;		//子优先级3
-//	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
-//	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
+	//Usart1 NVIC 配置
+  NVIC_InitStructure.NVIC_IRQChannel = UART4_IRQn;//串口4中断通道
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=3;//抢占优先级3
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority =2;		//子优先级3
+	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;			//IRQ通道使能
+	NVIC_Init(&NVIC_InitStructure);	//根据指定的参数初始化VIC寄存器、
 
 	
 }

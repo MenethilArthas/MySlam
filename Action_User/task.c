@@ -78,6 +78,8 @@ void App_Task()
 extern u32 			DMA_Send_count;
 extern int32_t speed_value,current_value,relative_position_value,absolute_position_value;
 
+
+//#define ttl
 void ConfigTask(void)
 {
 	
@@ -98,7 +100,7 @@ void ConfigTask(void)
 	//和定位系统通信串口
 	GYRO_USART3_Init(115200);
 	
-	//调试用串口
+	//备用串口
 	DEBUG_UART4_Init(115200);
 
 
@@ -111,8 +113,8 @@ void ConfigTask(void)
 	ActionConfigTorque(2,1000);
 
 
-	ActionConfigVelocity(1,50000,50000);
-	ActionConfigVelocity(2,50000,50000);
+	ActionConfigVelocity(1,20000,20000);
+	ActionConfigVelocity(2,20000,20000);
 
 
 	OSSemSet(PeriodSem,0,&os_err);			
@@ -143,11 +145,20 @@ void WalkTask(void)
 			txData.coor[0]=pos.x;
 			txData.coor[1]=pos.y;
 			txData.coor[2]=pos.angle;
+			#ifdef ttl
 			USART_SendData(USART2,'A');
 			USART_SendData(USART2,'C');
+			#else
+			USART_SendData(UART4,'A');
+			USART_SendData(UART4,'C');
+			#endif
 			for(int i=0;i<12;i++)
 			{
+				#ifdef ttl
 				USART_SendData(USART2,txData.data[i]);
+				#else
+				USART_SendData(UART4,txData.data[i]);
+				#endif
 			}
 		
 
@@ -157,7 +168,7 @@ void WalkTask(void)
 
 void MotionCtrl(uint8_t cmd)
 {
-	int16_t initVel    =   5000;
+	int16_t initVel    =   3000;
 	static float   velScale   =    1;
 	switch(cmd)
 	{
@@ -166,12 +177,12 @@ void MotionCtrl(uint8_t cmd)
 			ActionSetVelocity(2,initVel*velScale);
 			break;
 		case 'd':
-			ActionSetVelocity(1,0.2*initVel*velScale);
-			ActionSetVelocity(2,0.2*(-initVel)*velScale);
+			ActionSetVelocity(1,0.4*initVel*velScale);
+			ActionSetVelocity(2,0.4*(-initVel)*velScale);
 			break;
 		case 'a':
-			ActionSetVelocity(1,0.2*(-initVel)*velScale);
-			ActionSetVelocity(2,0.2*initVel*velScale);
+			ActionSetVelocity(1,0.4*(-initVel)*velScale);
+			ActionSetVelocity(2,0.4*initVel*velScale);
 			break;
 		case 'x':
 			ActionSetVelocity(1,-initVel*velScale);

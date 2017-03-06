@@ -246,7 +246,59 @@ void USART2_IRQHandler(void)                	//串口2中断服务程序
   } 
 	OSIntExit();  											 
 } 
+void UART4_IRQHandler(void)                	//串口4中断服务程序
+{
+	u16 Res=0;
+	
+	static u8 count=0;
+	
+	OSIntEnter();    
 
+	if(USART_GetITStatus(UART4, USART_IT_RXNE) == SET)  //接收中断(接收到的数据必须是0x0d 0x0a结尾)
+	{
+		USART_ClearITPendingBit( UART4,USART_IT_RXNE);
+		Res =USART_ReceiveData(UART4);//读取接收到的数据
+		switch(count)
+		{
+			case 0:
+				if(Res=='A')
+					count++;
+				else
+					count=0;
+				break;
+			case 1:
+				if(Res=='C')
+					count++;
+				else
+					count=0;
+				break;
+			case 2:
+				SetInput(Res);
+//			case 2:
+//				posture.data[0]=Res;
+//			  count++;
+//				break;
+//			case 3:
+//				posture.data[1]=Res;
+//			  count++;
+//				break;
+//			case 4:
+//				posture.data[2]=Res;
+//			  count++;
+//				break;
+//			case 5:
+//				posture.data[3]=Res;
+//			  recCmdVel.linearVel=posture.vel[0];
+//				recCmdVel.angularVel=posture.vel[1];
+//			
+//				Set_CmdVel(&recCmdVel);
+			  count=0;
+				break;
+				
+		}		 
+  } 
+	OSIntExit();  											 
+} 
 
 
 void USART3_IRQHandler(void)
