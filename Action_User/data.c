@@ -1,5 +1,7 @@
 #include "data.h"
 #include "stdio.h"
+#include "math.h"
+
 
 CmdVel cmdVel;
 Posture pos;
@@ -32,13 +34,18 @@ int8_t Get_CmdVel(CmdVel *velData)
 
 int8_t Set_Pos(Posture *posData)
 {
+	
 	if(posData==NULL)
 		return FALSE;
 	else
 	{
-		pos.x=posData->x;
-		pos.y=posData->y;
-		pos.angle=posData->angle;
+		
+		pos.y = posData->x ;
+		pos.x = posData->y ;
+		pos.angle = -posData->angle;
+//				pos.y =posData->y;
+//		pos.x = posData->x;
+//		pos.angle = -posData->angle;
 		return TRUE;
 	}
 }

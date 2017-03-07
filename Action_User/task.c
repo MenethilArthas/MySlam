@@ -63,12 +63,12 @@ void App_Task()
 	os_err = OSTaskCreate(	(void (*)(void *)) ConfigTask,					//初始化任务
 	                      	(void          * ) 0,							
 							(OS_STK        * )&App_ConfigStk[Config_TASK_START_STK_SIZE-1],		
-							(INT8U           ) Config_TASK_START_PRIO  );	
+							(INT8U           ) CONFIG_TASK_START_PRIO  );	
 
 	os_err = OSTaskCreate(	(void (*)(void *)) WalkTask,					//走行任务
 													(void          * ) 0,							
 							(OS_STK        * )&WalkTaskStk[Walk_TASK_STK_SIZE-1],		
-							(INT8U           ) Walk_TASK_PRIO  );									
+							(INT8U           ) WALK_TASK_PRIO  );									
 												
 
 													

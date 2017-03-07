@@ -54,10 +54,10 @@ static void DEBUGTask(void);
 */
 
 #define  APP_TASK_START_PRIO                               10u
-#define  Config_TASK_START_PRIO                            11u
+#define  CONFIG_TASK_START_PRIO                            11u
 #define  BeforePlay_TASK_PRIO                              12u
 #define  Play_TASK_PRIO                                    13u
-#define  Walk_TASK_PRIO                                    14u
+#define  WALK_TASK_PRIO                                    14u
 #define  GoHome_Dealerr_TASK_PRIO                          15u
 #if DEBUG	
 #define  DEBUG_TASK_PRIO                                   16u

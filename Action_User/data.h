@@ -9,6 +9,11 @@
 #define LINEAR_SCALE    30
 #define ANGULAR_SCALE   10
 
+#define LENGTH   190
+
+#define PI   3.1415
+
+
 typedef struct CMD_VEL
 {
 	int16_t linearVel;
