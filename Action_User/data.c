@@ -40,12 +40,10 @@ int8_t Set_Pos(Posture *posData)
 	else
 	{
 		
-		pos.y = posData->x ;
-		pos.x = posData->y ;
-		pos.angle = -posData->angle;
-//				pos.y =posData->y;
-//		pos.x = posData->x;
-//		pos.angle = -posData->angle;
+		pos.y = -posData->x /1000;
+		pos.x = posData->y /1000;
+		pos.angle = posData->angle/360*2*PI;
+
 		return TRUE;
 	}
 }
